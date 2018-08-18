@@ -4,6 +4,7 @@ const env = "DEV";
 const sprite = document.querySelector('.sprite');
 const css = sprite.style;
 const currentLeft = window.getComputedStyle(sprite).getPropertyValue('left');
+const currentBottom = window.getComputedStyle(sprite).getPropertyValue('bottom');
 
 function log(logging) {
   switch (env) {
@@ -29,8 +30,10 @@ function keyUpHandler(e) {
       moveHorizontal('right');
       break;
     case "ArrowUp":
+      moveVertical('up');
       break;
     case "ArrowDown":
+      moveVertical('down');
       break;
     default:
       return;
@@ -60,11 +63,41 @@ function moveHorizontal(direction) {
   log(newLeftInt.toString() + 'px');
 
   // set left property
-  css.left = newleftInt.toString() + 'px';
+  css.left = newLeftInt.toString() + 'px';
+}
+
+function moveVertical(direction) {
+  // get inline bottom property
+  const inlineBottom = css.bottom;
+
+  // get numerical portion of CSS property: slice at 'px' and convert to int.
+  const currentBottomInt = parseInt( inlineBottom.slice(0, inlineBottom.indexOf('p')) );
+  log(currentBottomInt);
+
+  let newBottomInt;
+  switch (direction) {
+    case "up":
+      newBottomInt = currentBottomInt + 10;
+      break;
+    case "down":
+      newBottomInt = currentBottomInt - 10;
+      break;
+    default:
+      return;
+  }
+  log(newBottomInt);
+  log(newBottomInt.toString() + 'px');
+
+  // set bottom property
+  css.bottom = newBottomInt.toString() + 'px';
 }
 
 // on window load, set inline property to property from style sheet
 css.left = currentLeft;
 log(css.left);
+
+// on window load, set inline property to property from style sheet
+css.bottom = currentBottom;
+log(css.bottom);
 
 window.addEventListener("keyup", keyUpHandler);
