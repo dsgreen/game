@@ -23,9 +23,10 @@ function keyUpHandler(e) {
     case " ":
       break;
     case "ArrowLeft":
+      moveHorizontal('left');
       break;
     case "ArrowRight":
-      moveRight();
+      moveHorizontal('right');
       break;
     case "ArrowUp":
       break;
@@ -36,7 +37,7 @@ function keyUpHandler(e) {
   }
 }
 
-function moveRight() {
+function moveHorizontal(direction) {
   // get linline left property
   const inlineLeft = css.left;
 
@@ -44,9 +45,19 @@ function moveRight() {
   const currentLeftInt = parseInt( inlineLeft.slice(0, inlineLeft.indexOf('p')) );
   log(currentLeftInt);
 
-  const newleftInt = currentLeftInt + 10;
-  log(newleftInt);
-  log(newleftInt.toString() + 'px');
+  let newLeftInt;
+  switch (direction) {
+    case "left":
+      newLeftInt = currentLeftInt - 10;
+      break;
+    case "right":
+      newLeftInt = currentLeftInt + 10;
+      break;
+    default:
+      return;
+  }
+  log(newLeftInt);
+  log(newLeftInt.toString() + 'px');
 
   // set left property
   css.left = newleftInt.toString() + 'px';
