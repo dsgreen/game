@@ -24,80 +24,85 @@ function keyUpHandler(e) {
     case " ":
       break;
     case "ArrowLeft":
-      moveHorizontal('left');
+      move('x', 'neg');
       break;
     case "ArrowRight":
-      moveHorizontal('right');
+      move('x', 'pos');
       break;
     case "ArrowUp":
-      moveVertical('up');
+      move('y', 'pos');
       break;
     case "ArrowDown":
-      moveVertical('down');
+      move('y', 'neg');
       break;
     default:
       return;
   }
 }
 
-function moveHorizontal(direction) {
-  // get linline left property
-  const inlineLeft = css.left;
+/**
+ * Move the sprite on the x and y axis in positive or negative direction.
+ *
+ * @param axis
+ * @param direction
+ *
+ * axis: x/y
+ * direction: pos/neg (pos for up and right, neg for left and down)
+ */
+function move(axis, direction) {
+  let property;
+  switch (axis) {
+    case "x":
+      // get linline left property
+      property = css.left;
+      break;
+    case "y":
+      // get inline bottom property
+      property = css.bottom;
+      break;
+    default:
+      return;
+  }
+  log(property);
 
   // get numerical portion of CSS property: slice at 'px' and convert to int.
-  const currentLeftInt = parseInt( inlineLeft.slice(0, inlineLeft.indexOf('p')) );
-  log(currentLeftInt);
+  const currentPropInt = parseInt( property.slice(0, property.indexOf('p')) );
+  // log(currentPropInt);
 
-  let newLeftInt;
+  let newPropInt;
   switch (direction) {
-    case "left":
-      newLeftInt = currentLeftInt - 10;
+    case "pos":
+      newPropInt = currentPropInt + 10;
       break;
-    case "right":
-      newLeftInt = currentLeftInt + 10;
+    case "neg":
+      newPropInt = currentPropInt - 10;
       break;
     default:
       return;
   }
-  log(newLeftInt);
-  log(newLeftInt.toString() + 'px');
+  // log(newPropInt);
+  log(newPropInt.toString() + 'px');
 
-  // set left property
-  css.left = newLeftInt.toString() + 'px';
-}
-
-function moveVertical(direction) {
-  // get inline bottom property
-  const inlineBottom = css.bottom;
-
-  // get numerical portion of CSS property: slice at 'px' and convert to int.
-  const currentBottomInt = parseInt( inlineBottom.slice(0, inlineBottom.indexOf('p')) );
-  log(currentBottomInt);
-
-  let newBottomInt;
-  switch (direction) {
-    case "up":
-      newBottomInt = currentBottomInt + 10;
+  // set inline property
+  switch (axis) {
+    case "x":
+      // get linline left property
+      css.left = newPropInt.toString() + 'px';
       break;
-    case "down":
-      newBottomInt = currentBottomInt - 10;
+    case "y":
+      // get inline bottom property
+      css.bottom = newPropInt.toString() + 'px';
       break;
     default:
       return;
   }
-  log(newBottomInt);
-  log(newBottomInt.toString() + 'px');
-
-  // set bottom property
-  css.bottom = newBottomInt.toString() + 'px';
 }
 
-// on window load, set inline property to property from style sheet
+// on window load, set inline property to property from style sheet so we have access to it
 css.left = currentLeft;
-log(css.left);
-
-// on window load, set inline property to property from style sheet
 css.bottom = currentBottom;
-log(css.bottom);
+// log(css.left);
+// log(css.bottom);
 
+// keydown, timer, keyup to stop
 window.addEventListener("keyup", keyUpHandler);
