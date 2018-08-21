@@ -16,7 +16,7 @@ function log(logging) {
   }
 }
 
-function keyUpHandler(e) {
+function keyDownHandler(e) {
   log(e.key);
   switch (e.key) {
     case "Enter":
@@ -104,5 +104,8 @@ css.bottom = currentBottom;
 // log(css.left);
 // log(css.bottom);
 
-// keydown, timer, keyup to stop
-window.addEventListener("keyup", keyUpHandler);
+window.addEventListener("keydown", keyDownHandler);
+
+// timer
+// let intervalID = window.setInterval(function, delay);
+// window.clearInterval(intervalID);
